@@ -411,12 +411,12 @@ echo "
                action=\"generic /sys/devices/system/cpu/cpufreq/zzmoove/up_threshold_hotplug1\"
                unit=\"%\" min=\"0\" reversed=\"false\" step=\"1\" max=\"100\"/>
 
-      <seekBar description=\"Hotplug up threshold for cpu1. 0 disable core2, possible range from down_threshold up to 100. Default: 68%.\"
+      <seekBar description=\"Hotplug up threshold for cpu2. 0 disable core2, possible range from down_threshold up to 100. Default: 68%.\"
                name=\"Hotplug up threshold CPU2\" 
                action=\"generic /sys/devices/system/cpu/cpufreq/zzmoove/up_threshold_hotplug2\"
                unit=\"%\" min=\"0\" reversed=\"false\" step=\"1\" max=\"100\"/>
 
-      <seekBar description=\"Hotplug up threshold for cpu1. 0 disable core3, possible range from down_threshold up to 100. Default: 68%.\"
+      <seekBar description=\"Hotplug up threshold for cpu3. 0 disable core3, possible range from down_threshold up to 100. Default: 68%.\"
                name=\"Hotplug up threshold CPU3\" 
                action=\"generic /sys/devices/system/cpu/cpufreq/zzmoove/up_threshold_hotplug3\"
                unit=\"%\" min=\"0\" reversed=\"false\" step=\"1\" max=\"100\"/>
@@ -956,7 +956,15 @@ echo '
                 unit="ms" min="0" reversed="false" step="25" max="500"/>
 
     </settingsPane>
+    <settingsPane description="" 
+                  name="Touch Boost Switch">
+    
+     <checkbox  description="Enable touch boost at 800mhz step or disable it for variable steps" 
+                name="Touch Boost Switch" 
+                action="generic01 /sys/class/misc/touchboost_switch/touchboost_switch"
+                label="Enable touch boost"/>
 
+    </settingsPane>
     <settingsPane description="mobile Digital Natural Image engine control. Samsungs hardware image post-processor controls virtually any image manipulation. All control master switches, if left as delta controls, will negate the sequence setting if checked. Master sequence has SCR and CS enabled by default."
 		  name="Global controls">
 
