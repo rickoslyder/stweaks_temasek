@@ -802,9 +802,141 @@ echo '
                 label="Enable dynamic FSync"/>
 
     </settingsPane>
-  </settingsTab>
-
+  </settingsTab>' >> $XML
+if [ -e /sys/class/misc/wolfson_control ]; then
+echo '
   <settingsTab name="Audio">
+    <settingsPane description="Speaker Tuning Settings" name="Speaker Tuning">
+      <checkbox description="Enable speaker equalizer for better bass response on main speakers" 
+                name="Speaker equalizer" 
+                action="generic01 /sys/class/misc/wolfson_control/switch_eq_speaker" 
+                label="Enable speaker equalizer"/>
+
+      <seekBar  description="External speaker amlification level." 
+		name="Speaker left channel volume" 
+                action="generic /sys/class/misc/wolfson_control/speaker_left" 
+                unit="" min="57" reversed="false" step="1" max="63"/>
+
+      <seekBar  description="" 
+		name="Speaker right channel volume"
+                action="generic /sys/class/misc/wolfson_control/speaker_right" 
+                unit="" min="57" reversed="false" step="1" max="63"/>
+
+      <seekBar  description="" 
+		name="Speaker boost level"
+                action="generic /sys/class/misc/wolfson_control/speaker_boost_level" 
+                unit="" min="0" reversed="false" step="1" max="7"/>
+
+      <checkbox  description="Prevents any sound to be outputted via speaker when headphones are connected." 
+                name="Privacy mode" 
+                action="generic01 /sys/class/misc/wolfson_control/switch_privacy_mode"
+                label="Enable privacy mode"/>
+    </settingsPane>
+
+    <settingsPane description="Headphone amplification increases volume only on headphones and headsets." 
+		  name="Headphone Amplification">
+      <seekBar  description="Headphone Amplifier Level (0-63 which corresponds to -57db-6db)" 
+		name="Headphone left channel volume"
+                action="generic /sys/class/misc/wolfson_control/headphone_left" 
+                unit="" min="0" reversed="false" step="1" max="63"/>      
+
+      <seekBar  description="" 
+		name="Headphone right channel volume"
+                action="generic /sys/class/misc/wolfson_control/headphone_right" 
+                unit="" min="0" reversed="false" step="1" max="63"/>
+    </settingsPane>
+
+    <settingsPane description="The stereo expansion effect produces a virtual 3D effect on sound." 
+		  name="Stereo expansion">
+      <seekBar  description="Stereo expansion level (0-31dB). 0 disables the control." 
+		name="Stereo expansion"
+                action="generic /sys/class/misc/wolfson_control/stereo_expansion" 
+                unit="" min="0" reversed="false" step="1" max="31"/>
+    </settingsPane>
+
+    <settingsPane description="Controls the hardware equalizer." 
+                  name="Equalizer settings">
+
+      <checkbox description="Enable headphone equalizer for gain controls." 
+                name="Headphone equalizer" 
+                action="maskvalue 1 /sys/class/misc/wolfson_control/switch_eq_headphone" 
+                label="Enable headphone equalizer"/>
+
+      <checkbox description="Enable saturation prevention for headphone equalizer" 
+                name="Saturation prevention" 
+                action="maskvalue 2 /sys/class/misc/wolfson_control/switch_eq_headphone"
+                label="Enable saturation prevention"/>
+
+      <seekBar  description="" 
+		name="Band1 gain" 
+                action="generic /sys/class/misc/wolfson_control/eq_hp_gain_1" 
+                unit=" dB" min="-12" reversed="false" step="1" max="12"/>
+
+      <seekBar  description="" 
+		name="Band2 gain" 
+                action="generic /sys/class/misc/wolfson_control/eq_hp_gain_2" 
+                unit=" dB" min="-12" reversed="false" step="1" max="12"/>
+
+      <seekBar  description="" 
+		name="Band3 gain" 
+                action="generic /sys/class/misc/wolfson_control/eq_hp_gain_3" 
+                unit=" dB" min="-12" reversed="false" step="1" max="12"/>
+
+      <seekBar  description="" 
+		name="Band4 gain" 
+                action="generic /sys/class/misc/wolfson_control/eq_hp_gain_4" 
+                unit=" dB" min="-12" reversed="false" step="1" max="12"/>
+
+      <seekBar  description="" 
+		name="Band5 gain" 
+                action="generic /sys/class/misc/wolfson_control/eq_hp_gain_5" 
+                unit=" dB" min="-12" reversed="false" step="1" max="12"/>
+    </settingsPane>
+
+    <settingsPane description="The microphone levels control the mic sensitivity." 
+		  name="Microphone control">
+      <seekBar  description="" 
+		name="Microphone level general"
+                action="generic /sys/class/misc/wolfson_control/mic_level_general" 
+                unit="" min="0" reversed="false" step="1" max="31"/>
+
+      <seekBar  description=""
+                name="Microphone level during active camera"
+                action="generic /sys/class/misc/wolfson_control/mic_level_camera" 
+                unit="" min="0" reversed="false" step="1" max="31"/>
+
+      <seekBar  description="" 
+		name="Microphone level in-call"
+                action="generic /sys/class/misc/wolfson_control/mic_level_call"
+                unit="" min="0" reversed="false" step="1" max="31"/>
+    </settingsPane>
+
+    <settingsPane description="Optimization, conversion quality, signal processing and effect settings" name="Other Settings">
+      <checkbox  description="Tuned WM1811 FLL to generate clock source" 
+                name="FLL Tuning" 
+                action="generic01 /sys/class/misc/wolfson_control/switch_fll_tuning"
+                label="Enable FLL Tuning"/>
+
+      <checkbox  description="For 48kHz sample rate, the DAC oversample rate is 128fs when this option is selected, which makes the music sound better." 
+                name="DAC OverSampling" 
+                action="generic01 /sys/class/misc/wolfson_control/switch_oversampling"
+                label="Enable DAC Oversampling"/>
+
+      <checkbox  description="Bypass analog channel mixer and redirect the sound directly to the output." 
+                name="DAC Direct" 
+                action="generic01 /sys/class/misc/wolfson_control/switch_dac_direct"
+                label="Enable DAC direct"/>
+
+      <checkbox  description="This forces the output to be mono even if the source is stereo" 
+                name="Force Mono Downmix" 
+                action="generic01 /sys/class/misc/wolfson_control/switch_mono_downmix"
+                label="Enable force mono downmix"/>
+
+    </settingsPane>
+  </settingsTab>' >> $XML
+elif [ -e /sys/class/misc/scoobydoo_sound ]; then
+	  echo '
+<settingsTab name="Audio">
     <settingsPane description="Speaker Tuning Settings" name="Speaker Tuning">
       <checkbox description="Enable speaker tuning for better bass response on main speakers" name="Speaker Tuning" action="generic01 /sys/class/misc/scoobydoo_sound/speaker_tuning" label="Speaker Tuning"/>
       <seekBar description="Speaker Amplification Offset. 0 means stock value. Having too much amplification may cause distortion." 
@@ -873,7 +1005,10 @@ echo '
              <spinnerItem name="Enabled" value="1"/> 
       </spinner>
     </settingsPane>
-  </settingsTab>
+  </settingsTab>' >> $XML
+fi
+
+echo '
 
   <settingsTab name="Power">
     <settingsPane description="Device charging currents are composed of input current coming into the device (Nominal 5V) and charge current fed to the battery (Battery Charge Voltage). Charger detection divides charging cable types into three categories: DCP - Dedicated Charging Port and AC Connector plugs; SDP - Standard Downstream Port for typical USB connectors; and CDP - Charging Downstream Port for USB connectors adhering to BC 1.1 specification. Input current is the sum of device load and charging load. If charging current exceeds input load, then charging current is dynamically adjusted. For avoiding battery deterioration, charging currents of less than 0.7 Coloumb are advised; ex. 2100mAh (Capacity) * 0.7C = ~1470mA."
